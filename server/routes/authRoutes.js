@@ -1,6 +1,6 @@
-import passport from 'passport';
+const passport = require('passport');
 
-const authRouthes = (app) => {
+module.exports = (app) => {
     app.get(
         '/auth/google',
         passport.authenticate('google', {
@@ -19,5 +19,3 @@ const authRouthes = (app) => {
         res.send(req.user);
     });
 };
-
-export default authRouthes;

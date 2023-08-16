@@ -1,7 +1,7 @@
-import { googleClientID, googleClientSecret } from '../config/keys.js';
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { model } from 'mongoose';
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { model } = require('mongoose');
+const { googleClientID, googleClientSecret } = require('../config/keys.js');
 
 const User = model('users');
 
@@ -18,7 +18,7 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-const passportConfig = passport.use(
+passport.use(
     new GoogleStrategy(
         {
             clientID: googleClientID,
@@ -37,5 +37,3 @@ const passportConfig = passport.use(
         }
     )
 );
-
-export default passportConfig;
