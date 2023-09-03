@@ -4,6 +4,7 @@ import Header from './components/header-component/header.component.tsx';
 import Landing from './components/landing-component/landing.component.tsx';
 import React from 'react';
 import { useAuthStore } from './store/module/auth';
+import Payment from './components/payment-component/payment.component.tsx';
 
 const DashBoard = () => <div>DashBoard</div>;
 const SurveyNew = () => <div>SurveyNew</div>;
@@ -26,7 +27,8 @@ const App = () => {
       <Route path="/" element={<Header />}>
         <Route index element={<Landing />} />
         <Route path="dashboard" element={<DashBoard />} />
-        <Route index path="surveys" element={<SurveyNew />} />
+        <Route path="surveys" element={<SurveyNew />} />
+        <Route path="payment" element={<Payment />} />
       </Route>
     </Routes>
   );
