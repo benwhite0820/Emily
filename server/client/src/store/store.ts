@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './reducers/authReducer';
+import stripeReducer from './reducers/stripeReducer';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { signOutApi } from './queryMethod/authQuery';
 import { stripePaymentApi } from './queryMethod/stripeQuery';
@@ -7,6 +8,7 @@ import { stripePaymentApi } from './queryMethod/stripeQuery';
 const store = configureStore({
   reducer: {
     authReducer,
+    stripeReducer,
     [signOutApi.reducerPath]: signOutApi.reducer,
     [stripePaymentApi.reducerPath]: stripePaymentApi.reducer,
   },

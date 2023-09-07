@@ -5,7 +5,7 @@ export const stripePaymentApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
   endpoints: (builder) => ({
     fetchPayment: builder.query<{ clientSecret: string }, void>({
-      query: () => 'stripe_payment',
+      query: () => 'stripe_setup',
     }),
   }),
 });
