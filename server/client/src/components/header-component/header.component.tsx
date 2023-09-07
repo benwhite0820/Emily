@@ -1,18 +1,26 @@
 import { useAuthStore } from '@/store/module/auth';
 import { Link, Outlet } from 'react-router-dom';
+import { createPortal } from 'react-dom';
+import Payment from '../checkout.component/checkout.component';
+import { useStripeStore } from '@/store/module/stripe';
 
 const Header = () => {
   const authStore = useAuthStore();
+  const stripeStore = useStripeStore();
 
   const handleAuthLink = () => {
     if (authStore.state.isLogin)
       return (
-        <a
-          onClick={() => authStore.fetchUserLogout()}
-          className="text-2xl text-gray-50 transition duration-300 hover:text-stone-300"
-        >
-          Logout
-        </a>
+        <ul className="flex gap-6 text-2xl text-gray-50">
+          <li className="transition duration-300 hover:text-stone-300">
+            <a onClick={() => stripeStore.setIsPaymentOpen(true)}>
+              add credits
+            </a>
+          </li>
+          <li className="transition duration-300 hover:text-stone-300">
+            <a onClick={() => authStore.fetchUserLogout()}>Logout</a>
+          </li>
+        </ul>
       );
     return (
       <a
@@ -38,6 +46,8 @@ const Header = () => {
         <div className="w-100%">{handleAuthLink()}</div>
       </nav>
       <Outlet />
+      {stripeStore.state.isPaymentOpent &&
+        createPortal(<Payment />, document.body)}
     </>
   );
 };
