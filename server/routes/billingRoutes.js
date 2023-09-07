@@ -2,7 +2,7 @@ const { stripeSecretKey } = require('../config/keys');
 const stripe = require('stripe')(stripeSecretKey);
 
 module.exports = (app) => {
-  app.get('/api/stripe_payment', async (req, res) => {
+  app.get('/api/stripe_setup', async (req, res) => {
     const intent = await stripe.paymentIntents.create({
       amount: 1099,
       currency: 'usd',
@@ -13,4 +13,6 @@ module.exports = (app) => {
 
     res.send({ clientSecret: intent.client_secret });
   });
+
+  app.post('/api/stripe', (req, res) => {});
 };
