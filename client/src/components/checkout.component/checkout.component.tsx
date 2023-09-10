@@ -1,13 +1,16 @@
 import { useStripeStore } from '@/store/module/stripe';
+import { useFetchUpdateCreditsMutation } from '@/store/queryMethod/stripeQuery';
 import {
   PaymentElement,
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const CheckoutForm = () => {
   const stripeStore = useStripeStore();
+  const [updateCredit, { data }] = useFetchUpdateCreditsMutation();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -26,11 +29,22 @@ const CheckoutForm = () => {
     });
 
     if (result.error) {
-      console.log(result.error.message);
-    } else {
-      console.log(result.paymentIntent.id);
+      toast.warn('payment fail!', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    if (result.paymentIntent?.status === 'succeeded') {
+      updateCredit({ paymentStatus: result.paymentIntent?.status });
     }
   };
+
+  React.useEffect(() => {
+    if (!data?.googleId) return;
+    stripeStore.setIsPaymentOpen(false);
+    toast.success('payment success!', {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }, [data]);
 
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 rounded-md p-16 shadow-lg">
