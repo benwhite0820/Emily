@@ -4,7 +4,7 @@ const stripe = require('stripe')(stripeSecretKey);
 module.exports = (app) => {
   app.get('/api/stripe_setup', async (req, res) => {
     const intent = await stripe.paymentIntents.create({
-      amount: 1099,
+      amount: 599,
       currency: 'usd',
       automatic_payment_methods: {
         enabled: true,
@@ -14,5 +14,10 @@ module.exports = (app) => {
     res.send({ clientSecret: intent.client_secret });
   });
 
-  app.post('/api/stripe', (req, res) => {});
+  app.post('/api/stripe_successful', async (req, res) => {
+    if (!req.user && !req.body.paymentStatus !== 'succeeded') return;
+    req.user.credits += 5;
+    const user = await req.user.save();
+    res.send(user);
+  });
 };
