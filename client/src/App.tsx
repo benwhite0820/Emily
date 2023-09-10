@@ -27,8 +27,6 @@ const App = () => {
     authStore.fetchUserCookies();
   }, []);
 
-  console.log(data?.clientSecret);
-
   return (
     <Elements
       stripe={stripePromise}
