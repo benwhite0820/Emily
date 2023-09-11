@@ -6,15 +6,14 @@ import React from 'react';
 import { useAuthStore } from './store/module/auth';
 import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise } from './utils/stripe.utils.ts';
-import { useFetchPaymentQuery } from './store/queryMethod/stripeQuery.ts';
+import { useStripeStore } from './store/module/stripe.ts';
 
 const DashBoard = () => <div>DashBoard</div>;
 const SurveyNew = () => <div>SurveyNew</div>;
 
 const App = () => {
   const authStore = useAuthStore();
-
-  const { data } = useFetchPaymentQuery();
+  const stripeStore = useStripeStore();
 
   const isFirstRender = React.useRef(true);
 
@@ -31,10 +30,10 @@ const App = () => {
     <Elements
       stripe={stripePromise}
       options={{
-        clientSecret: data?.clientSecret,
+        clientSecret: stripeStore.fetchStripeClientSecret?.clientSecret,
         appearance: { theme: 'night' },
       }}
-      key={data?.clientSecret}
+      key={stripeStore.fetchStripeClientSecret?.clientSecret}
     >
       <Routes>
         <Route path="/" element={<Header />}>

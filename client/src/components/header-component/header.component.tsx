@@ -3,23 +3,17 @@ import { Link, Outlet } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import Payment from '../checkout.component/checkout.component';
 import { useStripeStore } from '@/store/module/stripe';
-import { useFetchCurrentUserCreditsQuery } from '@/store/queryMethod/stripeQuery';
 
 const Header = () => {
   const authStore = useAuthStore();
   const stripeStore = useStripeStore();
-  const { credits } = useFetchCurrentUserCreditsQuery(undefined, {
-    selectFromResult: ({ data }) => ({
-      credits: data ? data.credits : 0,
-    }),
-  });
 
   const handleAuthLink = () => {
     if (authStore.state.isLogin)
       return (
         <ul className="flex gap-6 text-2xl text-gray-50">
           <li className="transition duration-300 hover:text-stone-300">
-            {credits} credits
+            {stripeStore.userCurrentCredits} credits
           </li>
           <li className="transition duration-300 hover:text-stone-300">
             <a onClick={() => stripeStore.setIsPaymentOpen(true)}>
